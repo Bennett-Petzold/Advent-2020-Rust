@@ -75,7 +75,7 @@ impl BagRule {
                 Ok(rule) => Some(rule),
                 Err(e) => {
                     build_sentinel = Err(e);
-                    return None;
+                    None
                 }
             })
             .collect();
@@ -97,15 +97,10 @@ impl BagRule {
             cur_rules
                 .iter()
                 .filter_map(|rule| {
-                    match rule
-                        .contains
+                    rule.contains
                         .iter()
-                        .filter(|(_, inside)| names.contains(&inside))
-                        .next()
-                    {
-                        Some(_) => Some(String::from(&rule.name)),
-                        None => None,
-                    }
+                        .find(|(_, inside)| names.contains(inside))
+                        .map(|_| String::from(&rule.name))
                 })
                 .collect()
         };
@@ -114,7 +109,7 @@ impl BagRule {
         let mut found = search(&rules_remaining, &names);
 
         let mut count = 0;
-        while found.len() > 0 {
+        while !found.is_empty() {
             count += found.len();
             names.append(&mut found);
             rules_remaining = update_rules(&rules_remaining, &names);

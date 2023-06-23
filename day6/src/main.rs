@@ -28,7 +28,7 @@ impl Group {
         BufReader::new(File::open(name).unwrap())
             .lines()
             .map(|line| line.unwrap())
-            .group_by(|line| line != "")
+            .group_by(|line| !line.is_empty())
             .into_iter()
             .filter(|(key, _)| *key)
             .map(|(_, entries)| Group::new(entries))
@@ -98,11 +98,15 @@ mod tests {
     fn part2() {
         let groups = Group::from_file("test-input");
         let results = [3, 0, 1, 1, 1];
-        let mut idx = 0;
-        for (real, expect) in groups.iter().map(|group| group.num_agree()).zip(results) {
+
+        for (idx, (real, expect)) in groups
+            .iter()
+            .map(|group| group.num_agree())
+            .zip(results)
+            .enumerate()
+        {
             println!("idx: {}, group: {}", idx, groups[idx].answers);
             assert_eq!(real, expect);
-            idx += 1;
         }
     }
 

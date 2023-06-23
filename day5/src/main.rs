@@ -116,10 +116,7 @@ impl BoardingPass {
             .clone()
             .zip(sorted_ids.skip(1))
             .find(|(prev, cur)| cur - prev == 2);
-        match gap_pair {
-            Some((_, cur)) => Some(cur - 1),
-            None => None,
-        }
+        gap_pair.map(|(_, cur)| cur - 1)
     }
 }
 

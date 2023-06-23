@@ -92,7 +92,7 @@ impl NewPasswordEntry {
     fn from_file(name: &str) -> Vec<NewPasswordEntry> {
         PasswordEntry::from_file(name)
             .iter()
-            .map(|pass| NewPasswordEntry::update(pass))
+            .map(NewPasswordEntry::update)
             .collect()
     }
 

@@ -69,7 +69,7 @@ impl Console {
         let mut sentinel: anyhow::Result<()> = Ok(());
         let instructions: Vec<_> = lines
             .into_iter()
-            .map_while(|line| match line.find(" ") {
+            .map_while(|line| match line.find(' ') {
                 Some(space) => {
                     match (
                         Code::from_str(&line[..space]),
@@ -137,7 +137,7 @@ impl Console {
                 (Code::Jmp, num, false) => {
                     let mut mod_copy = self.clone();
                     mod_copy.instructions[idx] = (Code::Nop, num, false);
-                    if let Ok(acc) = Self::accumulator_terminate(mod_copy, idx.clone()) {
+                    if let Ok(acc) = Self::accumulator_terminate(mod_copy, idx) {
                         return Ok(acc);
                     }
                     usize::try_from(isize::try_from(idx)? + num)?
@@ -145,7 +145,7 @@ impl Console {
                 (Code::Nop, num, false) => {
                     let mut mod_copy = self.clone();
                     mod_copy.instructions[idx] = (Code::Jmp, num, false);
-                    if let Ok(acc) = Self::accumulator_terminate(mod_copy, idx.clone()) {
+                    if let Ok(acc) = Self::accumulator_terminate(mod_copy, idx) {
                         return Ok(acc);
                     }
                     idx + 1

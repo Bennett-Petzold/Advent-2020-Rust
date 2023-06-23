@@ -28,7 +28,7 @@ impl Xmas {
     where
         I: Iterator<Item = i32> + 'static,
     {
-        let mut it = value.into_iter();
+        let mut it = value;
         Xmas {
             numbers: it.by_ref().take(count).collect(),
             it: Box::new(it),
@@ -42,7 +42,7 @@ impl Xmas {
             let prev: Vec<_> = self.numbers.iter().sorted().cloned().collect();
             let mut found = false;
             for val in &prev[..prev.len() - 1] {
-                if let Ok(_) = prev.binary_search(&(entry - val)) {
+                if prev.binary_search(&(entry - val)).is_ok() {
                     self.numbers.pop_front();
                     self.numbers.push_back(entry);
                     found = true;

@@ -51,7 +51,7 @@ impl Passport {
         BufReader::new(File::open(s).unwrap())
             .lines()
             .map(|line| line.unwrap())
-            .group_by(|line| line == "")
+            .group_by(|line| line.is_empty())
             .into_iter()
             .filter(|(blank, _)| !blank)
             .map(|(_, line)| line.reduce(|acc, x| format!("{} {}", acc, x)).unwrap())
@@ -117,8 +117,8 @@ impl Passport {
                 }
                 match PARTS.captures(value) {
                     Some(cap) => match (cap[1].parse::<u32>()?, &cap[2]) {
-                        (num, "cm") => Ok(num >= 150 && num <= 193),
-                        (num, "in") => Ok(num >= 59 && num <= 76),
+                        (num, "cm") => Ok((150..=193).contains(&num)),
+                        (num, "in") => Ok((59..=76).contains(&num)),
                         _ => Err("Invalid unit for hgt")?,
                     },
                     _ => Ok(false),
