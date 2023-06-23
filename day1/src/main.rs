@@ -80,10 +80,11 @@ mod tests {
     #[test]
     fn part2_match() {
         let stim: Vec<_> = file_to_vec("test-input");
-        assert_eq!(
-            find_sum(&stim, 2020, 3).unwrap().sort(),
-            [979, 366, 675].sort()
-        );
+        let mut found_sum = find_sum(&stim, 2020, 3).unwrap();
+        found_sum.sort();
+        let mut expected = [979, 366, 675];
+        expected.sort();
+        assert_eq!(found_sum, expected);
     }
 
     #[test]

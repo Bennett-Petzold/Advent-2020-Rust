@@ -93,7 +93,10 @@ mod tests {
     #[test]
     fn part2() {
         let mut descents = Slope::from_file("test-input").all_descend();
-        assert_eq!(descents.sort(), [2, 7, 3, 4, 2].sort());
+        descents.sort();
+        let mut expected = [2, 7, 3, 4, 2];
+        expected.sort();
+        assert_eq!(descents, expected);
         assert_eq!(descents.iter().product::<u64>(), 336);
     }
 }
